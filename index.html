@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste tecnico</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+<body>
+    <header>
+        <h3>Sivanildo Oliveira</h3>
+    </header>
+
+    <main>
+
+        <button class="btn mx" id="btnProx">Proximo</button>
+
+        <section id="display">
+            <article >
+                <h1>Teste Técnico 1</h1>
+                <div>
+                    <pre>
+Escreva uma função que receba uma string de colchetes como entrada e determine se a ordem 
+dos parênteses é válido. Um colchete é considerado qualquer um dos seguintes caracteres: (, ), 
+{, }, [, ou ]. 
+Dizemos que uma sequência de colchetes é válida se as seguintes condições forem atendidas: 
+● Não contém colchetes sem correspondência. 
+● O subconjunto de colchetes dentro dos limites de um par de colchetes correspondente é 
+também um par de colchetes. 
+Exemplos: 
+● (){}[] é válido 
+● [{()}](){} é válido 
+● []{() não é válido 
+● [{)] não é válido 
+                    </pre>
+                    <div class="div-input">
+                        <h5 class="resp" id="resp">Válido</h5>
+                        <input type="text" name="inputQuest1" id="inputQuest1">
+                        <button class="btn mx" id="btnValidar">VALIDAR</button>
+                    </div>
+                    
+                </div>
+            </article>
+
+        </section>
+    </main>
+
+    <script>
+
+
+        const btnValidar = document.getElementById('btnValidar');
+
+        btnValidar.addEventListener('click', ()=>{
+            let valor = document.getElementById('inputQuest1');
+            let resp = document.getElementById('resp');
+            if(validarString(valor.value)){
+                resp.classList.remove('invalido');
+                resp.classList.add('valido');
+                resp.innerHTML = 'Válido'
+            } else{
+                resp.classList.remove('valido');
+                resp.classList.add('invalido');
+                resp.innerHTML = 'inválido'
+            }
+
+        })
+
+
+        var validarString = (string)=>{
+
+            var pa = 0;
+            var co = 0;
+            var ch = 0;
+
+            for(var i = 0; i < string.length; i++){
+
+                let caracter = string[i]
+
+                if('()'.includes(caracter)){
+                    if(caracter == '('){ pa++ }
+                    else(pa--)
+                    if(pa  < 0){return false}
+                }
+
+                if('[]'.includes(caracter)){
+                    if(caracter == '['){ co++ }
+                    else(co--)
+                    if(co  < 0){return false}
+                }
+
+                if('{}'.includes(caracter)){
+                    if(caracter == '{'){ ch++ }
+                    else(ch--)
+                    if(ch  < 0){return false}
+                }
+
+            }
+
+            if(pa == 0 && co == 0 && ch == 0){ return true}
+            else{ return false}
+        }
+    </script>
+    
+    <script>
+        const btnProx = document.getElementById('btnProx');
+
+        var cont = 1
+        const partes = document.querySelectorAll('#display article');
+        
+    </script>
+</body>
+</html>

@@ -1,5 +1,4 @@
 from MyApp import app, database
-from datetime import datetime
 
 
 class Contato(database.Model):
