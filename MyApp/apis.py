@@ -1,19 +1,27 @@
-from flask import request
+from flask import request, jsonify
 from MyApp import app, database
 from MyApp.models import Contato, Cc
 import json
 
 
-@app.route('/lista', methods=['GET','POST'])
-def lista(nome=None):
+@app.route('/lista', methods=['GET'])
+def lista():
     data = Contato.query.all()
-    retorno = []
-    for c in data:
-        retorno.append(c.to_dict())
-    return retorno
+
+    lista_contatos = [{"id": cont.id, "nome": cont.nome, "contatos": len(cont.contatos)} for cont in data]
+    
+    return jsonify(lista_contatos), 200
 
 
-@app.route('/add', methods=['GET','POST'])
+@app.route('/contato/<int:id>', methods=['GET'])
+def contatos(id):
+    data = Contato.query.filter_by(id=id).first()
+    
+    return jsonify(data.return_contatos()), 200
+
+
+
+@app.route('/add', methods=['PUT'])
 def add():
 
     '''formato de json
@@ -48,13 +56,13 @@ def add():
         
         database.session.commit()
 
-        return json.dumps({'status': 200, 'mensagem': 'Contato Salvo'})
+        return jsonify(contato.todict()), 200
     except Exception as err:
         print(err)
-        return  json.dumps({'status': 400, 'mensagem': 'ERRO na Solicitacao'})
+        return  jsonify({'mensagem': 'ERRO'}), 400
     
     
-@app.route('/remover_contato/<id>', methods=['GET', 'POST'])
+@app.route('/remover_contato/<id>', methods=['POST'])
 def remover_contato(id):
     try:
         contato = Contato.query.filter_by(id=id).first()
@@ -65,24 +73,24 @@ def remover_contato(id):
         database.session.delete(contato)
         database.session.commit()
 
-        return json.dumps({'status': 200, 'mensagem': 'Contato Removido'})
+        return jsonify({'status': 200, 'mensagem': 'Contato Removido'})
     except:
-        return json.dumps({'status': 400, 'mensagem': 'Falha na Operacao'})
+        return jsonify({'status': 400, 'mensagem': 'Falha na Operacao'})
     
 
-@app.route('/remover_cc/<id>', methods=['GET', 'POST'])
+@app.route('/remover_cc/<id>', methods=['POST'])
 def remover_cc(id):
     try:
         contato = Cc.query.filter_by(id=id).first()
         database.session.delete(contato)
         database.session.commit()
 
-        return json.dumps({'status': 200, 'mensagem': 'Contato Removido'})
+        return jsonify({'status': 200, 'mensagem': 'Contato Removido'})
     except:
-        return json.dumps({'status': 400, 'mensagem': 'Falha na Operacao'})
+        return jsonify({'status': 400, 'mensagem': 'Falha na Operacao'})
 
 
-@app.route('/atualizar/<id>', methods=['GET', 'POST'])
+@app.route('/atualizar/<id>', methods=['POST'])
 def atualizar(id):
     try:
         data = request.get_json()
@@ -93,6 +101,6 @@ def atualizar(id):
         
         database.session.commit()
 
-        return json.dumps(contato.to_dict())
+        return jsonify(contato.to_dict())
     except:
-        return json.dumps({'status': 400, 'mensagem': 'Falha na Operacao'})
+        return jsonify({'status': 400, 'mensagem': 'Falha na Operacao'})

@@ -13,6 +13,9 @@ class Contato(database.Model):
             data['contatos'].append(c.to_dict())
 
         return data
+    
+    def return_contatos(self):
+        return [cont.to_dict() for cont in self.contatos]
 
     
 
