@@ -62,30 +62,32 @@ def add():
         return  jsonify({'mensagem': 'ERRO'}), 400
     
     
-@app.route('/remover_contato/<id>', methods=['POST'])
+@app.route('/del_contato/<id>', methods=['DELETE'])
 def remover_contato(id):
     try:
         contato = Contato.query.filter_by(id=id).first()
-
         for cc in contato.contatos:
             database.session.delete(cc)
 
-        database.session.delete(contato)
+        #database.session.delete(contato)
         database.session.commit()
 
         return jsonify({'status': 200, 'mensagem': 'Contato Removido'})
+    
     except:
         return jsonify({'status': 400, 'mensagem': 'Falha na Operacao'})
     
 
-@app.route('/remover_cc/<id>', methods=['POST'])
+@app.route('/del_cc/<int:id>', methods=['DELETE'])
 def remover_cc(id):
     try:
         contato = Cc.query.filter_by(id=id).first()
+        print()
+        id_contato = contato.id_contato
         database.session.delete(contato)
         database.session.commit()
 
-        return jsonify({'status': 200, 'mensagem': 'Contato Removido'})
+        return jsonify({'status': 200, 'mensagem': 'Contato Removido', 'id_contato': id_contato})
     except:
         return jsonify({'status': 400, 'mensagem': 'Falha na Operacao'})
 

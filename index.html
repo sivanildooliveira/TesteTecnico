@@ -129,7 +129,8 @@ do usuário é totalmente até você.
                     <li>
                         <div class="div-flex" style="gap: 20px;">
                             <i class="bi bi-instagram"></i>
-                            <strong>sivanildoseguro@outlook.com.br</strong>
+                            <input type="text" value="" disabled>
+                            
                         </div>
                         <div class="div-flex" style="gap: 20px;">
                             <a href="#" class="bi bi-pencil"></a>
@@ -139,6 +140,8 @@ do usuário é totalmente até você.
                   
                 </ul>
               </dialog>
+
+              
               
               
             </article>
@@ -146,16 +149,40 @@ do usuário é totalmente até você.
         </section>
     </main>
     
-    <script src="api.js"></script>
+    <script>
+      const btnProx = document.getElementById('btnProx');
+      
+      const partes = document.querySelectorAll('#display article');
+      
+      var cont = 0
+
+      btnProx.addEventListener('click', ()=>{
+        if (cont == 0) {
+          cont++;
+          btnProx.innerHTML = 'anterior'
+        } else {
+          cont--;
+          btnProx.innerHTML = 'proximo'
+        }
+        
+        partes.forEach((p, i) => {
+          if (cont == i) {
+            p.classList.add('active');
+          } else {
+            p.classList.remove('active');
+          }
+        });
+      });
+    </script>
 
     <script>
 
-        
         const btnValidar = document.getElementById('btnValidar');
 
         btnValidar.addEventListener('click', ()=>{
             let valor = document.getElementById('inputQuest1');
             let resp = document.getElementById('resp');
+
             if(validarString(valor.value)){
                 resp.classList.remove('invalido');
                 resp.classList.add('valido');
@@ -203,67 +230,13 @@ do usuário é totalmente até você.
             else{ return false}
         }
     </script>
-    
-    <script>
-        const btnProx = document.getElementById('btnProx');
-        
-        const partes = document.querySelectorAll('#display article');
-        
-        var cont = 0
 
-        btnProx.addEventListener('click', ()=>{
-          if (cont == 0) {
-            cont++;
-            btnProx.innerHTML = 'anterior'
-          } else {
-            cont--;
-            btnProx.innerHTML = 'proximo'
-          }
-          
-          partes.forEach((p, i) => {
-            if (cont == i) {
-              p.classList.add('active');
-            } else {
-              p.classList.remove('active');
-            }
-          });
-        });
-    </script>
-    
     <script>
-      
-      
-      var openContato = (id)=>{
-        const verContato = document.getElementById('verContato');
-        var lista = verContato.querySelector('ul')
-        lista.innerHTML = ''
 
-        fetch('http://127.0.0.1:5000/contato/' + id)
-          .then(resp => resp.json())
-          .then(resp =>{
-            resp.forEach(contato => {
-              lista.innerHTML += `
-              
-              <li>
-                  <div class="div-flex" style="gap: 20px;">
-                      <i class="bi bi-${contato.tipo}"></i>
-                      <strong>${contato.contato}</strong>
-                  </div>
-                  <div class="div-flex" style="gap: 20px;">
-                      <a href="#" class="bi bi-pencil"></a>
-                      <a href="#" class="bi bi-trash"></a>
-                  </div>
-              </li>
-              
-              `
-            })
-          })
-        
-        
-        verContato.showModal()
-      }
-      
-      
+
     </script>
+
+    <script src="api.js"></script>
+
 </body>
 </html>
